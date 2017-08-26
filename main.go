@@ -8,13 +8,8 @@ import (
 	"strings"
 )
 
-var s []prompt.Suggest
-
 func completer(in prompt.Document) []prompt.Suggest {
-	return prompt.FilterHasPrefix(s, in.GetWordBeforeCursor(), true)
-}
-
-func main() {
+	s := []prompt.Suggest{}
 	out, _ := exec.Command("git", "branch", "-a").Output()
 	lines := strings.Split(string(out), "\n")
 	for i := 0; i < len(lines); i++ {
@@ -25,7 +20,10 @@ func main() {
 			s = append(s, prompt.Suggest{Text: line})
 		}
 	}
+	return prompt.FilterHasPrefix(s, in.GetWordBeforeCursor(), true)
+}
 
+func main() {
 	in := prompt.Input("branch: ", completer,
 		prompt.OptionTitle("git checkout"),
 		prompt.OptionPrefixTextColor(prompt.Blue))
