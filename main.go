@@ -20,7 +20,7 @@ func completer(in prompt.Document) []prompt.Suggest {
 			s = append(s, prompt.Suggest{Text: line})
 		}
 	}
-	return prompt.FilterHasPrefix(s, in.GetWordBeforeCursor(), true)
+	return prompt.FilterContains(s, in.GetWordBeforeCursor(), true)
 }
 
 func main() {
